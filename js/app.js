@@ -1,35 +1,96 @@
 /*
   Please add all Javascript code to this file.
 */
+/*
+*
+*
+*   POPUP CODE
+*
+*
+*/
 
-//TOP HEADLINES CODE
+let popUp = document.querySelector('#popUp');
+let closePopUp = document.querySelector('.closePopUp');
+let main = document.querySelector('#main');
+main.onclick = (event)=>{
+  let target = event.target;
+  if(target.tagName !== 'article') {
+    popUp.classList.remove('hidden');
+  } else {
+    return;
+  }
+}
+closePopUp.onclick = ()=>{
+  popUp.classList.add('hidden');
+}
+
+/*
+*
+*
+*   DROPDOWN CODE
+*
+*
+*/
+//variables
+let getBbcEl = document.querySelector('.getBbc');
+let getBbcElInner = getBbcEl.innerHTML;
+let getNytEl = document.querySelector('.getNyt');
+let getNytElInner = getNytEl.innerHTML;
+let getOmdbEl = document.querySelector('.getOmdb');
+let getOmdbElInner = getOmdbEl.innerHTML;
+let currentSource = document.querySelector('.currentSource');
+console.log(getBbcElInner);
+
+//fetch BBC data when click BBC dropdwn element
+getBbcEl.addEventListener('click', (e)=>{
+  e.preventDefault();
+  currentSource.innerHTML = getBbcElInner;
+  getBbcFunc();
+});
+
+//fetch nyt data when click nyt dropdown element
+getNytEl.addEventListener('click', (e)=>{
+  e.preventDefault();
+  currentSource.innerHTML = getNytElInner;
+  getNytFunc();
+});
+
+//fetch OMDB data when click OMDB dropdown element
+getOmdbEl.addEventListener('click', (e)=>{
+  e.preventDefault();
+  console.log('clicked OMDB');
+})
+/*
+ *
+ *
+ *    TOP HEADLINES CODE
+ *
+ *
+ *
+ */
 //toggle the headline wrapper
 let $topHeadlineTitle = $('.top-headlines-title-wrapper');
 let $topHeadlineWrapper = $('.top-headline-wrapper');
 let $header = $('header');
 
 $topHeadlineTitle.click(()=>{
-  console.log('click')
   $topHeadlineWrapper.slideToggle();
 });
-
 $header.mouseenter(()=>{
   $topHeadlineTitle.slideDown();
 });
-
 $header.mouseleave(()=>{
   $topHeadlineTitle.slideUp();
 })
 
-let key = 'd3f1b410f43c4e519bda526f1ace84e0';
-let topHeadlineUrl = 'https://newsapi.org/v2/';
-
+//top headline variables
+let topHeadlineArticlesEl = document.querySelector('#top-headline-articles');
 let loadingTopArticles = document.querySelector('.loading-top-articles');
 let loading = document.querySelector('#loading');
 let searchParams;
 
-//top headline variable
-let topHeadlineArticlesEl = document.querySelector('#top-headline-articles');
+let key = 'd3f1b410f43c4e519bda526f1ace84e0';
+let topHeadlineUrl = 'https://newsapi.org/v2/';
 
 //GENERATE CURRENT TOP HEADLINES ON PAGE LOAD
 fetch(topHeadlineUrl + 'top-headlines?pageSize=100&country=us&apiKey=' + key)
@@ -117,6 +178,7 @@ fetch(topHeadlineUrl + 'top-headlines?pageSize=100&country=us&apiKey=' + key)
 *
 *
 *
+*    BBC Code
 *
 *
 *
@@ -125,16 +187,18 @@ fetch(topHeadlineUrl + 'top-headlines?pageSize=100&country=us&apiKey=' + key)
 *
 */
 
-let mainArticleContainer = document.querySelector('#main');
-let baseUrl = 'https://newsapi.org/v2/';
-let domain = 'bbc.co.uk';
+function getBbcFunc(){
+
+  let mainArticleContainer = document.querySelector('#main');
+  let baseUrl = 'https://newsapi.org/v2/';
+  let domain = 'bbc.co.uk';
 
 fetch('https://newsapi.org/v2/everything?domains=' + domain + '&apiKey=' + key)
   .then((res)=>{
     return res.json();
   })
   .then((response)=>{
-    console.log(response);
+//     console.log(response);
 
 for (let i = 0; i < 4; i++) {
     //store data from the response
@@ -167,7 +231,7 @@ for (let i = 0; i < 4; i++) {
     clearfixEl.classList.add('clearfix');
     imgEl.setAttribute('src', imgUrl);
     anchorEl.setAttribute('href', '#');
-    sectionImpressionsEl.innerHTML = '526';
+    sectionImpressionsEl.innerHTML = 'Click for more';
 
     //populate the elements
     h3titleEl.innerHTML = title;
@@ -184,33 +248,87 @@ for (let i = 0; i < 4; i++) {
     articleEl.append(clearfixEl);
     //insert the populated article element into #main
     mainArticleContainer.append(articleEl);
-}
-// close for loop
-  });
-//close final .then()
 
-//get today's date
-function ISODateString(d){
- function pad(n){return n<10 ? '0'+n : n}
- return d.getUTCFullYear()+'-'
-      + pad((d.getUTCMonth() - 2)+1)+'-'
-      + pad(d.getUTCDate())+'T'
-      + pad(d.getUTCHours())+':'
-      + pad(d.getUTCMinutes())+':'
-      + pad(d.getUTCSeconds())+'Z'
-};
-let today = new Date();
-let todayRFC = ISODateString(today);
-console.log(todayRFC);
+// close for loop
+  }
+//close final .then()
+  });
+//close function
+}
+//call the function to populate the articles on page load
+getBbcFunc();
+
+/*
+*
+*
+*
+*
+*
+*    NYT Code
+*
+*
+*
+*
+*
+*
+*/
+
+function getNytFunc(){
+//get today's date in a specific format
+// function ISODateString(d){
+//  return d.getUTCFullYear()+'-'
+//       + pad((d.getUTCMonth())+1)+'-'
+//       + pad(d.getUTCDate())+'T'
+//       + pad(d.getUTCHours())+':'
+//       + pad(d.getUTCMinutes())+':'
+//       + pad(d.getUTCSeconds())+'Z'
+// };
+// let todayRFC = ISODateString(today);
 
 //On this day fetch
-let url = 'https://api.currentsapi.services/v1/search?' + 'language=en&' + 'end_date=' + todayRFC + '&' + 'apiKey=w8hrxg7aiMbGuqeuAYWmeWQKrjWds3vqjf1NbruAo73ZUgFh';
-// let url = 'https://api.currentsapi.services/v1/available/regions';
+let nytKey = '031670YfuZ8ia2FOGsqBOjYlLP8FsOeB';
+let nytYear = '1890';
+let nytMonth = '11'
 
-fetch(url)
+let nytUrl = 'https://api.nytimes.com/svc/archive/v1/' + nytYear + '/' + nytMonth + '.json?api-key=' + nytKey;
+
+fetch(nytUrl)
   .then((res)=>{
     return res.json();
   })
   .then((response)=>{
+    // console.log(todayRFC);
+    // console.log(today);
+    //1890-03-01T00:00:00Z = example
     console.log(response);
+    //date variables
+    function pad(n){return n<10 ? '0'+n : n}
+    let today = new Date();
+    let month = pad(today.getUTCMonth());
+    let dayNum = pad(today.getUTCDate());
+    let dayMonth = month + '-' + dayNum;
+    console.log('dayMonth = ' + dayMonth);
+    let nytArticle = response.response.docs[0];
+    let nytPubDate = nytArticle.pub_date;
+
+    function findTodayArticles() {
+      console.log('starting search');
+      for(let k = 0; k<response.response.docs.length; k++){
+        //search each article's pubdate for dayMonth
+        if(nytPubDate.search(dayMonth) === 5) {
+          nytArticle = response.response.docs[k];
+          nytPubDate = nytArticle.pub_date;
+          return nytArticle;
+        }
+      //close for loop
+      }
+      if(nytArticle){return nytArticle}
+      console.log(nytArticle);
+    //close findTodayArticles
+    };
+    findTodayArticles();
+
+//close final .then
   })
+// close function
+}

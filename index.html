@@ -19,24 +19,23 @@
         <![endif]-->
 
         <header>
-          <div class="top-headlines-title-wrapper"><h3 class="top-headlines-title">This Hour's Headlines</h3></div>
-          <div class="top-headline-wrapper">
+          <!-- Top headlines -->
 
+          <div class="top-headline-wrapper">
               <div id="top-headline-articles">
             <p class="loading-top-articles">Loading Top Articles...</p>
               </div>
-
           </div>
 
           <section class="container">
             <a href="#"><h1>Feedr</h1></a>
             <nav>
               <ul>
-                <li><a href="#">News Source: <span>Source Name</span></a>
+                <li><a href="#">News Source: <span class="currentSource">Choose below</span></a>
                   <ul>
-                      <li><a href="#">Source 1</a></li>
-                      <li><a href="#">Source 2</a></li>
-                      <li><a href="#">Source 3</a></li>
+                      <li><a class="getBbc" href="#">BBC News</a></li>
+                      <li><a class="getNyt" href="#">NYT On This Day</a></li>
+                      <li><a class="getOmdb" href="#">OMDB</a></li>
                   </ul>
                 </li>
               </ul>
@@ -47,7 +46,9 @@
             </nav>
             <div class="clearfix"></div>
           </section>
+          <div class="top-headlines-title-wrapper"><h3 class="top-headlines-title">This Hour's Headlines</h3></div>
         </header>
+<!-- main article section -->
         <div id="popUp" class="loader hidden">
           <a href="#" class="closePopUp">X</a>
           <div class="container">
