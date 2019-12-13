@@ -19,14 +19,13 @@
         <![endif]-->
 
         <header>
-          <!-- Top headlines -->
-
+<!-- Top headlines -->
           <div class="top-headline-wrapper">
               <div id="top-headline-articles">
             <p class="loading-top-articles">Loading Top Articles...</p>
               </div>
           </div>
-
+<!-- visible header -->
           <section class="container">
             <a href="#"><h1>Feedr</h1></a>
             <nav>
@@ -48,17 +47,40 @@
           </section>
           <div class="top-headlines-title-wrapper"><h3 class="top-headlines-title">This Hour's Headlines</h3></div>
         </header>
-<!-- main article section -->
-        <div id="popUp" class="loader hidden">
+<!-- POPUP section -->
+        <!-- <div id="popUp" class="hidden">
           <a href="#" class="closePopUp">X</a>
           <div class="container">
-            <h1>Article title here</h1>
-            <p>
+            <img class="popUp-img" src="https://res.cloudinary.com/mtv1243/image/upload/v1576264078/placeholder.jpg">
+            <h1 class="popUp-title">Article title here</h1>
+            <p class="popUp-description">
               Article description/content here.
             </p>
             <a href="#" class="popUpAction" target="_blank">Read more from source</a>
           </div>
+        </div> -->
+        <div class="spacer"></div>
+<!-- Date Selector -->
+        <div class="date-selector hidden">
+          <h3 class="date-selector-title">Input any month after January, 1852 to see news from that month.</h3>
+          <input type="text" name="year" class="year-input" value="1852" placeholder="Year">
+          <select class="month-input">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <button class="date-button">Get articles</button>
         </div>
+<!-- Main section -->
         <section id="main" class="container">
           <!--
           article -->
@@ -78,10 +100,9 @@
           <!--
           article -->
         </section>
-
+<!-- scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
         <script src="js/app.js"></script>
-
     </body>
 </html>

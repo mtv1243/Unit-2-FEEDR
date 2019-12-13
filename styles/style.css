@@ -16,8 +16,8 @@
 
 #popUp .closePopUp {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 120px;
+  right: 150px;
   font-size: 40px;
   color: #FE052C;
   text-decoration: none;
@@ -34,7 +34,13 @@
 }
 
 #popUp .container {
-  margin-top: 80px;
+  margin-top: 30vh;
+}
+
+#popUp .container .popUp-img {
+  width: 400px;
+  float: left;
+  margin-right: 20px;
 }
 
 #popUp h1 {
@@ -175,7 +181,9 @@ header h1 {
   padding-left: 0;
 }
 
-/* Header navigation bar */
+/* ----------------------
+Header navigation bar
+----------------------- */
 header nav {
   padding: 10px 2%;
   width: 76%;
@@ -239,6 +247,7 @@ header nav a {
 	line-height: 40px;
 	text-decoration:none;
   transition: 0.2s all;
+  border: 1px solid #FE052C;
 }
 
 header nav a:hover {
@@ -280,9 +289,37 @@ nav ul ul li {
 	position: relative;
 }
 
-/* Main Section */
+/*========================
+ Date input section
+ ========================*/
+.spacer {
+  margin-top: 105px;
+  height: 1px;
+}
+
+.date-selector {
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.date-selector input {
+  width: 60px;
+}
+
+/* ======================
+Main Section
+==========================*/
 #main {
-  margin-top: 65px;
+  margin-top: 15px;
+}
+
+#main.loader {
+  background-image: url(../images/ajax_loader.gif);
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 /* Individual Article Styling

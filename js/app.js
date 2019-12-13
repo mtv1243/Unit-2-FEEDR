@@ -8,26 +8,29 @@
 *
 *
 */
+// let popUp = document.querySelector('#popUp');
+// let closePopUp = document.querySelector('.closePopUp');
+// let popUpImg = document.querySelector('.popUp-img');
+// let popUpTitle = document.querySelector('.popUp-title');
+// let popUpDescription = document.querySelector('.popUp-description');
+// let popUpAction = document.querySelector('.popUpAction');
 
-let popUp = document.querySelector('#popUp');
-let closePopUp = document.querySelector('.closePopUp');
+//main section
+let body = document.querySelector('body');
+let spacer = document.querySelector('.spacer');
 let main = document.querySelector('#main');
-main.onclick = (event)=>{
-  let target = event.target;
-  if(target.tagName !== 'article') {
-    popUp.classList.remove('hidden');
-  } else {
-    return;
-  }
-}
-closePopUp.onclick = ()=>{
-  popUp.classList.add('hidden');
-}
+
+
+
+
+let dateSelector = document.querySelector('.date-selector');
+
 
 /*
 *
 *
 *   DROPDOWN CODE
+*   drives the article population
 *
 *
 */
@@ -44,20 +47,32 @@ console.log(getBbcElInner);
 //fetch BBC data when click BBC dropdwn element
 getBbcEl.addEventListener('click', (e)=>{
   e.preventDefault();
+  dateSelector.classList.add('hidden');
   currentSource.innerHTML = getBbcElInner;
+  getNytEl.classList.remove('active');
+  getOmdbEl.classList.remove('active');
+  getBbcEl.classList.add('active');
   getBbcFunc();
 });
 
 //fetch nyt data when click nyt dropdown element
 getNytEl.addEventListener('click', (e)=>{
   e.preventDefault();
+  dateSelector.classList.remove('hidden');
   currentSource.innerHTML = getNytElInner;
+  getBbcEl.classList.remove('active');
+  getOmdbEl.classList.remove('active');
+  getNytEl.classList.add('active');
   getNytFunc();
 });
 
 //fetch OMDB data when click OMDB dropdown element
 getOmdbEl.addEventListener('click', (e)=>{
   e.preventDefault();
+  dateSelector.classList.add('hidden');
+  getBbcEl.classList.remove('active');
+  getNytEl.classList.remove('active');
+  getOmdbEl.classList.add('active');
   console.log('clicked OMDB');
 })
 /*
@@ -199,7 +214,8 @@ fetch('https://newsapi.org/v2/everything?domains=' + domain + '&apiKey=' + key)
   })
   .then((response)=>{
 //     console.log(response);
-
+//reset #main
+main.innerHTML = '';
 for (let i = 0; i < 4; i++) {
     //store data from the response
     let imgUrl = response.articles[i].urlToImage;
@@ -210,7 +226,57 @@ for (let i = 0; i < 4; i++) {
     let description = response.articles[i].description;
     let content = response.articles[i].content;
 
-    //create elements to populate on load
+    //create popUp elements to populate on load
+    let popUp = document.createElement('div');
+    popUp.setAttribute('id', 'popUp');
+    popUp.setAttribute('class', 'hidden');
+    popUp.classList.add('popUp' + i);
+    let closePopUp = document.createElement('a');
+    closePopUp.setAttribute('class', 'closePopUp');
+    closePopUp.setAttribute('href', '#');
+    closePopUp.innerHTML = 'X';
+    let popUpContainer = document.createElement('div');
+    popUpContainer.setAttribute('class', 'container');
+    let popUpImg = document.createElement('img');
+    popUpImg.setAttribute('class', 'popUp-img');
+    let popUpTitle = document.createElement('h1');
+    popUpTitle.setAttribute('class', 'popUp-title');
+    let popUpDescription = document.createElement('p');
+    popUpDescription.setAttribute('class', 'popUp-description');
+    let popUpAction = document.createElement('a');
+    popUpAction.setAttribute('href', '#');
+    popUpAction.setAttribute('class', 'popUpAction');
+    popUpAction.setAttribute('target', '_blank');
+    popUpAction.innerHTML = 'Read more from the source';
+
+    //populate the popUp
+    popUpImg.setAttribute('src', imgUrl);
+    popUpTitle.innerHTML = title;
+    popUpDescription.innerHTML = description;
+    popUpAction.setAttribute('href', articleUrl);
+    //assemble the popUp
+    popUpContainer.append(popUpImg);
+    popUpContainer.append(popUpTitle);
+    popUpContainer.append(popUpDescription);
+    popUpContainer.append(popUpAction);
+    popUp.append(closePopUp);
+    popUp.append(popUpContainer);
+    //insert the popUp
+    body.insertBefore(popUp, spacer);
+
+    main.onclick = (event)=>{
+      let target = event.target;
+      if(target.tagName !== 'article') {
+        popUp.classList.remove('hidden');
+      } else {
+        return;
+      }
+    }
+    closePopUp.onclick = ()=>{
+      popUp.classList.add('hidden');
+    }
+
+    //create article elements to populate on load
     let articleEl = document.createElement('article');
     let sectionFeaturedImgEl = document.createElement('section');
     let imgEl = document.createElement('img');
@@ -224,7 +290,7 @@ for (let i = 0; i < 4; i++) {
     // anchorEl.setAttribute('class', 'top-headline-anchor')
 
     //add the necessary classes and attributes
-    articleEl.classList.add('article');
+    articleEl.classList.add('article', 'article' + i);
     sectionFeaturedImgEl.classList.add('featuredImage');
     sectionArticleContentEl.classList.add('articleContent');
     h3titleEl.classList.add('title');
@@ -238,6 +304,7 @@ for (let i = 0; i < 4; i++) {
     h6SourceEl.innerHTML = source;
 
     //populate the elements with the response content
+    //order matters, work from the inside out
     anchorEl.append(h3titleEl);
     sectionArticleContentEl.append(anchorEl);
     sectionArticleContentEl.append(h6SourceEl);
@@ -248,16 +315,14 @@ for (let i = 0; i < 4; i++) {
     articleEl.append(clearfixEl);
     //insert the populated article element into #main
     mainArticleContainer.append(articleEl);
-
-// close for loop
+    // close for loop
   }
 //close final .then()
   });
 //close function
 }
-//call the function to populate the articles on page load
+//populate the articleswith BBC content to begin
 getBbcFunc();
-
 /*
 *
 *
@@ -273,62 +338,124 @@ getBbcFunc();
 *
 */
 
+//Date selector code
+let yearInput = document.querySelector('.year-input');
+let monthInput = document.querySelector('.month-input');
+let dayInput = document.querySelector('.day-input');
+let dateButton = document.querySelector('.date-button');
+let year = yearInput.value;
+let month = monthInput.value;
+
+dateButton.addEventListener('click', (e)=>{
+  e.preventDefault();
+  main.innerHTML = '';
+  main.classList.add('loader');
+  year = yearInput.value;
+  month = monthInput.value;
+  getNytFunc();
+  console.log(month);
+})
+
 function getNytFunc(){
-//get today's date in a specific format
-// function ISODateString(d){
-//  return d.getUTCFullYear()+'-'
-//       + pad((d.getUTCMonth())+1)+'-'
-//       + pad(d.getUTCDate())+'T'
-//       + pad(d.getUTCHours())+':'
-//       + pad(d.getUTCMinutes())+':'
-//       + pad(d.getUTCSeconds())+'Z'
-// };
-// let todayRFC = ISODateString(today);
-
-//On this day fetch
+let mainArticleContainer = document.querySelector('#main');
 let nytKey = '031670YfuZ8ia2FOGsqBOjYlLP8FsOeB';
-let nytYear = '1890';
-let nytMonth = '11'
-
-let nytUrl = 'https://api.nytimes.com/svc/archive/v1/' + nytYear + '/' + nytMonth + '.json?api-key=' + nytKey;
-
+//!!!IMPORTANT!!! single digit months in this URL do NOT need a zero in front
+//meaning (1 = january) is valid. (01 = january) is invalid.
+let nytUrl = 'https://api.nytimes.com/svc/archive/v1/' + year + '/' + month + '.json?api-key=' + nytKey;
+//On this day fetch
 fetch(nytUrl)
   .then((res)=>{
     return res.json();
   })
   .then((response)=>{
-    // console.log(todayRFC);
-    // console.log(today);
-    //1890-03-01T00:00:00Z = example
+    main.innerHTML = '';
+    main.classList.remove('loader');
+    //
     console.log(response);
+    //
+    //iterate through response to populate #main
+    for(m = 0; m<4; m++){
+      //
+      //store data from the response
+      let imgUrl = 'https://res.cloudinary.com/mtv1243/image/upload/v1576190267/new_york_times_t_black_background.jpg';
+      //store data from the response
+      let nytArticle = response.response.docs[m];
+      let nytPubDate = nytArticle.pub_date;
+      let articleUrl = nytArticle.web_url;
+      let title = nytArticle.headline.main;
+      let wordCount = nytArticle.word_count;
+      let source = nytArticle.source;
+      let description = nytArticle.lead_paragraph;
+      //
+      //create the elements
+      let articleEl = document.createElement('article');
+      let sectionFeaturedImgEl = document.createElement('section');
+      let imgEl = document.createElement('img');
+      let sectionArticleContentEl = document.createElement('section');
+      let anchorEl = document.createElement('a');
+      let h3titleEl = document.createElement('h3');
+      let h6SourceEl = document.createElement('h6');
+      let sectionImpressionsEl = document.createElement('section');
+      let clearfixEl = document.createElement('div');
+      // anchorEl.setAttribute('target', '_blank');
+      // anchorEl.setAttribute('class', 'top-headline-anchor')
+      //
+      //add the necessary classes and attributes to the elements
+      articleEl.classList.add('article');
+      sectionFeaturedImgEl.classList.add('featuredImage');
+      sectionArticleContentEl.classList.add('articleContent');
+      h3titleEl.classList.add('title');
+      clearfixEl.classList.add('clearfix');
+      imgEl.setAttribute('src', imgUrl);
+      anchorEl.setAttribute('href', '#');
+      sectionImpressionsEl.innerHTML = 'Click for more';
+      //
+      //insert elements into #main
+      //populate the elements
+      h3titleEl.innerHTML = title;
+      h6SourceEl.innerHTML = source;
+
+      //populate the elements with the response content
+      anchorEl.append(h3titleEl);
+      sectionArticleContentEl.append(anchorEl);
+      sectionArticleContentEl.append(h6SourceEl);
+      sectionFeaturedImgEl.append(imgEl);
+      articleEl.append(sectionFeaturedImgEl);
+      articleEl.append(sectionArticleContentEl);
+      articleEl.append(sectionImpressionsEl);
+      articleEl.append(clearfixEl);
+      //insert the populated article element into #main
+      mainArticleContainer.append(articleEl);
+    //close for loop
+    }
     //date variables
-    function pad(n){return n<10 ? '0'+n : n}
-    let today = new Date();
-    let month = pad(today.getUTCMonth());
-    let dayNum = pad(today.getUTCDate());
-    let dayMonth = month + '-' + dayNum;
-    console.log('dayMonth = ' + dayMonth);
-    let nytArticle = response.response.docs[0];
-    let nytPubDate = nytArticle.pub_date;
-
-    function findTodayArticles() {
-      console.log('starting search');
-      for(let k = 0; k<response.response.docs.length; k++){
-        //search each article's pubdate for dayMonth
-        if(nytPubDate.search(dayMonth) === 5) {
-          nytArticle = response.response.docs[k];
-          nytPubDate = nytArticle.pub_date;
-          return nytArticle;
-        }
-      //close for loop
-      }
-      if(nytArticle){return nytArticle}
-      console.log(nytArticle);
-    //close findTodayArticles
-    };
-    findTodayArticles();
-
-//close final .then
+    //1890-03-01T00:00:00Z = example required date format
+    // function pad(n){return n<10 ? '0'+n : n}
+    // let padMonth = pad(month);
+    // let yearMonth = year + '-' + padMonth;
+    // console.log('yearMonth = ' + yearMonth);
+    //
+    // //array where we will store the articles with the correct pub date
+    // let nytArticlesArr = [];
+    // //fills the array with the correct articles. declared below
+    // findTodayArticles();
+    //
+    // //declare the function to populate nytArticlesArr
+    // function findTodayArticles() {
+    //   console.log('starting search');
+    //   for(let k = 0; k<response.response.docs.length; k++){
+    //     nytArticle = response.response.docs[k];
+    //     nytPubDate = nytArticle.pub_date;
+    //     //search each article's pubdate for dayMonth
+    //     if(nytPubDate.search(yearMonth) === 0) {
+    //       nytArticlesArr.push(nytArticle);
+    //     }
+    //  //close for loop
+    //   }
+    //   return nytArticlesArr;
+    // //close findTodayArticles
+    // };
+    //close final .then
   })
-// close function
+// close getNytFunc function
 }
