@@ -29,7 +29,7 @@ body.addEventListener('click', (event)=>{
   let closePopUp = document.querySelector('.closePopUp');
   let closePopUpClicked;
   let popUpsAll = document.getElementsByClassName('popUp');
-  console.log(popUpsAll);
+  console.log(popUpsAll[0].classList);
   // popUpsAll.forEach((popUpNum, index)=>{
   //   popUpNum.addE
   // });
@@ -37,9 +37,10 @@ body.addEventListener('click', (event)=>{
   let targetClassName = target.className;
   //if clicked in article, show popUp, if clicked X, hide it
   if(targetClassName.includes('closePopUp')){
-    popUpsAll.forEach((value)=>{
-      value.classList.add('hidden');
-    })
+    popUpsAll[0].classList.add('hidden');
+    popUpsAll[1].classList.add('hidden');
+    popUpsAll[2].classList.add('hidden');
+    popUpsAll[3].classList.add('hidden');
   } else{
       if(articleClicked.className.includes('article0')) {
       popUpsAll[0].classList.remove('hidden');
