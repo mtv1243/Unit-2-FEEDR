@@ -25,14 +25,10 @@ body.addEventListener('click', (event)=>{
   let target = event.target;
   //find closest article el ancestor to target
   let articleClicked = target.closest('article');
-  // let popUp = document.querySelector('#popUp');
   let closePopUp = document.querySelector('.closePopUp');
   let closePopUpClicked;
   let popUpsAll = document.getElementsByClassName('popUp');
   console.log(popUpsAll[0].classList);
-  // popUpsAll.forEach((popUpNum, index)=>{
-  //   popUpNum.addE
-  // });
   //get the target's classes as a string
   let targetClassName = target.className;
   //if clicked in article, show popUp, if clicked X, hide it
@@ -423,7 +419,7 @@ fetch(nytUrl)
       // anchorEl.setAttribute('class', 'top-headline-anchor')
       //
       //add the necessary classes and attributes to the elements
-      articleEl.classList.add('article');
+      articleEl.classList.add('article', 'article' + m);
       sectionFeaturedImgEl.classList.add('featuredImage');
       sectionArticleContentEl.classList.add('articleContent');
       h3titleEl.classList.add('title');
@@ -450,33 +446,6 @@ fetch(nytUrl)
       mainArticleContainer.append(articleEl);
     //close for loop
     }
-    //date variables
-    //1890-03-01T00:00:00Z = example required date format
-    // function pad(n){return n<10 ? '0'+n : n}
-    // let padMonth = pad(month);
-    // let yearMonth = year + '-' + padMonth;
-    // console.log('yearMonth = ' + yearMonth);
-    //
-    // //array where we will store the articles with the correct pub date
-    // let nytArticlesArr = [];
-    // //fills the array with the correct articles. declared below
-    // findTodayArticles();
-    //
-    // //declare the function to populate nytArticlesArr
-    // function findTodayArticles() {
-    //   console.log('starting search');
-    //   for(let k = 0; k<response.response.docs.length; k++){
-    //     nytArticle = response.response.docs[k];
-    //     nytPubDate = nytArticle.pub_date;
-    //     //search each article's pubdate for dayMonth
-    //     if(nytPubDate.search(yearMonth) === 0) {
-    //       nytArticlesArr.push(nytArticle);
-    //     }
-    //  //close for loop
-    //   }
-    //   return nytArticlesArr;
-    // //close findTodayArticles
-    // };
     //close final .then
   })
 // close getNytFunc function
