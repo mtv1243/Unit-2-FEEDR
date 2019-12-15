@@ -20,6 +20,38 @@ let body = document.querySelector('body');
 let spacer = document.querySelector('.spacer');
 let main = document.querySelector('#main');
 
+body.addEventListener('click', (event)=>{
+  console.log(event);
+  let target = event.target;
+  //find closest article el ancestor to target
+  let articleClicked = target.closest('article');
+  // let popUp = document.querySelector('#popUp');
+  let closePopUp = document.querySelector('.closePopUp');
+  let closePopUpClicked;
+  let popUpsAll = document.getElementsByClassName('popUp');
+  console.log(popUpsAll);
+  // popUpsAll.forEach((popUpNum, index)=>{
+  //   popUpNum.addE
+  // });
+  //get the target's classes as a string
+  let targetClassName = target.className;
+  //if clicked in article, show popUp, if clicked X, hide it
+  if(targetClassName.includes('closePopUp')){
+    popUpsAll.forEach((value)=>{
+      value.classList.add('hidden');
+    })
+  } else{
+      if(articleClicked.className.includes('article0')) {
+      popUpsAll[0].classList.remove('hidden');
+    } else if(articleClicked.className.includes('article1')) {
+      popUpsAll[1].classList.remove('hidden');
+    } else if(articleClicked.className.includes('article2')) {
+      popUpsAll[2].classList.remove('hidden');
+    } else if(articleClicked.className.includes('article3')) {
+      popUpsAll[3].classList.remove('hidden');
+    }
+  }
+});
 
 
 
@@ -42,7 +74,6 @@ let getNytElInner = getNytEl.innerHTML;
 let getOmdbEl = document.querySelector('.getOmdb');
 let getOmdbElInner = getOmdbEl.innerHTML;
 let currentSource = document.querySelector('.currentSource');
-console.log(getBbcElInner);
 
 //fetch BBC data when click BBC dropdwn element
 getBbcEl.addEventListener('click', (e)=>{
@@ -230,7 +261,7 @@ for (let i = 0; i < 4; i++) {
     let popUp = document.createElement('div');
     popUp.setAttribute('id', 'popUp');
     popUp.setAttribute('class', 'hidden');
-    popUp.classList.add('popUp' + i);
+    popUp.classList.add('popUp', 'popUp' + i);
     let closePopUp = document.createElement('a');
     closePopUp.setAttribute('class', 'closePopUp');
     closePopUp.setAttribute('href', '#');
@@ -264,17 +295,7 @@ for (let i = 0; i < 4; i++) {
     //insert the popUp
     body.insertBefore(popUp, spacer);
 
-    main.onclick = (event)=>{
-      let target = event.target;
-      if(target.tagName !== 'article') {
-        popUp.classList.remove('hidden');
-      } else {
-        return;
-      }
-    }
-    closePopUp.onclick = ()=>{
-      popUp.classList.add('hidden');
-    }
+    // console.log(popUp.getAttribute('class'));
 
     //create article elements to populate on load
     let articleEl = document.createElement('article');
