@@ -19,6 +19,7 @@
 let body = document.querySelector('body');
 let spacer = document.querySelector('.spacer');
 let main = document.querySelector('#main');
+let popUpSection = document.querySelector('.popUpSection');
 
 body.addEventListener('click', (event)=>{
   console.log(event);
@@ -244,6 +245,7 @@ fetch('https://newsapi.org/v2/everything?domains=' + domain + '&apiKey=' + key)
 //     console.log(response);
 //reset #main
 main.innerHTML = '';
+popUpSection.innerHTML = '';
 for (let i = 0; i < 4; i++) {
     //store data from the response
     let imgUrl = response.articles[i].urlToImage;
@@ -289,9 +291,9 @@ for (let i = 0; i < 4; i++) {
     popUpContainer.append(popUpAction);
     popUp.append(closePopUp);
     popUp.append(popUpContainer);
-    //insert the popUp
-    body.insertBefore(popUp, spacer);
-
+    //insert the popUp before the spacer element
+    // body.insertBefore(popUp, spacer);
+    popUpSection.append(popUp);
     // console.log(popUp.getAttribute('class'));
 
     //create article elements to populate on load
@@ -339,7 +341,7 @@ for (let i = 0; i < 4; i++) {
   });
 //close function
 }
-//populate the articleswith BBC content to begin
+//populate the articles with BBC content on page load
 getBbcFunc();
 /*
 *
@@ -366,6 +368,7 @@ let month = monthInput.value;
 
 dateButton.addEventListener('click', (e)=>{
   e.preventDefault();
+  popUpSection.innerHTML = '';
   main.innerHTML = '';
   main.classList.add('loader');
   year = yearInput.value;
@@ -375,78 +378,120 @@ dateButton.addEventListener('click', (e)=>{
 })
 
 function getNytFunc(){
-let mainArticleContainer = document.querySelector('#main');
-let nytKey = '031670YfuZ8ia2FOGsqBOjYlLP8FsOeB';
-//!!!IMPORTANT!!! single digit months in this URL do NOT need a zero in front
-//meaning (1 = january) is valid. (01 = january) is invalid.
-let nytUrl = 'https://api.nytimes.com/svc/archive/v1/' + year + '/' + month + '.json?api-key=' + nytKey;
-//On this day fetch
-fetch(nytUrl)
-  .then((res)=>{
-    return res.json();
-  })
-  .then((response)=>{
-    main.innerHTML = '';
-    main.classList.remove('loader');
-    //
-    console.log(response);
-    //
-    //iterate through response to populate #main
-    for(m = 0; m<4; m++){
+  let mainArticleContainer = document.querySelector('#main');
+  let nytKey = '031670YfuZ8ia2FOGsqBOjYlLP8FsOeB';
+  //!!!IMPORTANT!!! single digit months in this URL do NOT need a zero in front
+  //meaning (1 = january) is valid. (01 = january) is invalid.
+  let nytUrl = 'https://api.nytimes.com/svc/archive/v1/' + year + '/' + month + '.json?api-key=' + nytKey;
+  //On this day fetch
+  fetch(nytUrl)
+    .then((res)=>{
+      return res.json();
+    })
+    .then((response)=>{
+      popUpSection.innerHTML = '';
+      main.innerHTML = '';
+      main.classList.remove('loader');
       //
-      //store data from the response
-      let imgUrl = 'https://res.cloudinary.com/mtv1243/image/upload/v1576190267/new_york_times_t_black_background.jpg';
-      //store data from the response
-      let nytArticle = response.response.docs[m];
-      let nytPubDate = nytArticle.pub_date;
-      let articleUrl = nytArticle.web_url;
-      let title = nytArticle.headline.main;
-      let wordCount = nytArticle.word_count;
-      let source = nytArticle.source;
-      let description = nytArticle.lead_paragraph;
+      console.log(response);
       //
-      //create the elements
-      let articleEl = document.createElement('article');
-      let sectionFeaturedImgEl = document.createElement('section');
-      let imgEl = document.createElement('img');
-      let sectionArticleContentEl = document.createElement('section');
-      let anchorEl = document.createElement('a');
-      let h3titleEl = document.createElement('h3');
-      let h6SourceEl = document.createElement('h6');
-      let sectionImpressionsEl = document.createElement('section');
-      let clearfixEl = document.createElement('div');
-      // anchorEl.setAttribute('target', '_blank');
-      // anchorEl.setAttribute('class', 'top-headline-anchor')
-      //
-      //add the necessary classes and attributes to the elements
-      articleEl.classList.add('article', 'article' + m);
-      sectionFeaturedImgEl.classList.add('featuredImage');
-      sectionArticleContentEl.classList.add('articleContent');
-      h3titleEl.classList.add('title');
-      clearfixEl.classList.add('clearfix');
-      imgEl.setAttribute('src', imgUrl);
-      anchorEl.setAttribute('href', '#');
-      sectionImpressionsEl.innerHTML = 'Click for more';
-      //
-      //insert elements into #main
-      //populate the elements
-      h3titleEl.innerHTML = title;
-      h6SourceEl.innerHTML = source;
+      //iterate through response to populate #main
+      for(m = 0; m<4; m++){
+        //
+        //store data from the response
+        let imgUrl = 'https://res.cloudinary.com/mtv1243/image/upload/v1576190267/new_york_times_t_black_background.jpg';
+        //store data from the response
+        let nytArticle = response.response.docs[m];
+        let nytPubDate = nytArticle.pub_date;
+        let articleUrl = nytArticle.web_url;
+        let title = nytArticle.headl ine.main;
+        let wordCount = nytArticle.word_count;
+        let source = nytArticle.source;
+        let description = nytArticle.lead_paragraph;
+        //
+        //create popUp elements to populate on load
+        let popUp = document.createElement('div');
+        popUp.setAttribute('id', 'popUp');
+        popUp.setAttribute('class', 'hidden');
+        popUp.classList.add('popUp', 'popUp' + m);
+        let closePopUp = document.createElement('a');
+        closePopUp.setAttribute('class', 'closePopUp');
+        closePopUp.setAttribute('href', '#');
+        closePopUp.innerHTML = 'X';
+        let popUpContainer = document.createElement('div');
+        popUpContainer.setAttribute('class', 'container');
+        let popUpImg = document.createElement('img');
+        popUpImg.setAttribute('class', 'popUp-img');
+        let popUpTitle = document.createElement('h1');
+        popUpTitle.setAttribute('class', 'popUp-title');
+        let popUpDescription = document.createElement('p');
+        popUpDescription.setAttribute('class', 'popUp-description');
+        let popUpAction = document.createElement('a');
+        popUpAction.setAttribute('href', '#');
+        popUpAction.setAttribute('class', 'popUpAction');
+        popUpAction.setAttribute('target', '_blank');
+        popUpAction.innerHTML = 'Read more from the source';
 
-      //populate the elements with the response content
-      anchorEl.append(h3titleEl);
-      sectionArticleContentEl.append(anchorEl);
-      sectionArticleContentEl.append(h6SourceEl);
-      sectionFeaturedImgEl.append(imgEl);
-      articleEl.append(sectionFeaturedImgEl);
-      articleEl.append(sectionArticleContentEl);
-      articleEl.append(sectionImpressionsEl);
-      articleEl.append(clearfixEl);
-      //insert the populated article element into #main
-      mainArticleContainer.append(articleEl);
-    //close for loop
-    }
-    //close final .then
-  })
+        //populate the popUp
+        popUpImg.setAttribute('src', imgUrl);
+        popUpTitle.innerHTML = title;
+        popUpDescription.innerHTML = description;
+        popUpAction.setAttribute('href', articleUrl);
+        //assemble the popUp
+        popUpContainer.append(popUpImg);
+        popUpContainer.append(popUpTitle);
+        popUpContainer.append(popUpDescription);
+        popUpContainer.append(popUpAction);
+        popUp.append(closePopUp);
+        popUp.append(popUpContainer);
+        //insert the popUp before the spacer element
+        // body.insertBefore(popUp, spacer);
+        popUpSection.append(popUp);
+        // console.log(popUp.getAttribute('class'));
+
+        //
+        //create the elements
+        let articleEl = document.createElement('article');
+        let sectionFeaturedImgEl = document.createElement('section');
+        let imgEl = document.createElement('img');
+        let sectionArticleContentEl = document.createElement('section');
+        let anchorEl = document.createElement('a');
+        let h3titleEl = document.createElement('h3');
+        let h6SourceEl = document.createElement('h6');
+        let sectionImpressionsEl = document.createElement('section');
+        let clearfixEl = document.createElement('div');
+        // anchorEl.setAttribute('target', '_blank');
+        // anchorEl.setAttribute('class', 'top-headline-anchor')
+        //
+        //add the necessary classes and attributes to the elements
+        articleEl.classList.add('article', 'article' + m);
+        sectionFeaturedImgEl.classList.add('featuredImage');
+        sectionArticleContentEl.classList.add('articleContent');
+        h3titleEl.classList.add('title');
+        clearfixEl.classList.add('clearfix');
+        imgEl.setAttribute('src', imgUrl);
+        anchorEl.setAttribute('href', '#');
+        sectionImpressionsEl.innerHTML = 'Click for more';
+        //
+        //insert elements into #main
+        //populate the elements
+        h3titleEl.innerHTML = title;
+        h6SourceEl.innerHTML = source;
+
+        //populate the elements with the response content
+        anchorEl.append(h3titleEl);
+        sectionArticleContentEl.append(anchorEl);
+        sectionArticleContentEl.append(h6SourceEl);
+        sectionFeaturedImgEl.append(imgEl);
+        articleEl.append(sectionFeaturedImgEl);
+        articleEl.append(sectionArticleContentEl);
+        articleEl.append(sectionImpressionsEl);
+        articleEl.append(clearfixEl);
+        //insert the populated article element into #main
+        mainArticleContainer.append(articleEl);
+      //close for loop
+      }
+      //close final .then
+    })
 // close getNytFunc function
 }
