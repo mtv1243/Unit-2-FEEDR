@@ -112,7 +112,7 @@ getOmdbEl.addEventListener('click', (e)=>{
  *
  *
  */
-//toggle the headline wrapper
+//toggle the headline wrapper up and down
 let $topHeadlineTitle = $('.top-headlines-title-wrapper');
 let $topHeadlineWrapper = $('.top-headline-wrapper');
 let $header = $('header');
@@ -404,7 +404,7 @@ function getNytFunc(){
         let nytArticle = response.response.docs[m];
         let nytPubDate = nytArticle.pub_date;
         let articleUrl = nytArticle.web_url;
-        let title = nytArticle.headl ine.main;
+        let title = nytArticle.headline.main;
         let wordCount = nytArticle.word_count;
         let source = nytArticle.source;
         let description = nytArticle.lead_paragraph;
