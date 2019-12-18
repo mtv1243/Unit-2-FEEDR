@@ -308,6 +308,17 @@ nav ul ul li {
   width: 60px;
 }
 
+/*========================
+ Movie Search section
+ ========================*/
+
+.movieSearch {
+  text-align: right;
+  width: 1000px;
+  margin: 0 auto;
+}
+
+
 /* ======================
 Main Section
 ==========================*/

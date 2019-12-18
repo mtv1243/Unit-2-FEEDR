@@ -16,6 +16,8 @@ feedrLogo.addEventListener('click', (e)=>{
   window.location.reload(false);
 })
 
+let dateSelector = document.querySelector('.date-selector');
+
 //main section
 let body = document.querySelector('body');
 let spacer = document.querySelector('.spacer');
@@ -23,14 +25,14 @@ let main = document.querySelector('#main');
 let popUpSection = document.querySelector('.popUpSection');
 
 body.addEventListener('click', (event)=>{
-  console.log(event);
+  // console.log(event);
   let target = event.target;
   //find closest article el ancestor to target
   let articleClicked = target.closest('article');
   let closePopUp = document.querySelector('.closePopUp');
   let closePopUpClicked;
   let popUpsAll = document.getElementsByClassName('popUp');
-  console.log(popUpsAll[0].classList);
+  // console.log(popUpsAll[0].classList);
   //get the target's classes as a string
   let targetClassName = target.className;
   //if clicked in article, show popUp, if clicked X, hide it
@@ -51,11 +53,6 @@ body.addEventListener('click', (event)=>{
     }
   }
 });
-
-
-
-let dateSelector = document.querySelector('.date-selector');
-
 
 /*
 *
@@ -103,8 +100,89 @@ getOmdbEl.addEventListener('click', (e)=>{
   getBbcEl.classList.remove('active');
   getNytEl.classList.remove('active');
   getOmdbEl.classList.add('active');
-  console.log('clicked OMDB');
+  // console.log('clicked OMDB');
 })
+
+/*
+*
+*
+*
+*   OMDB Code
+*
+*
+*
+*/
+
+let movieSearchButton = document.querySelector('.movieSearchButton');
+movieSearchButton.addEventListener('click', (e)=>{
+  e.preventDefault();
+  let movieSearch = document.querySelector('.movieSearch');
+  let movieSearchInput = document.querySelector('.movieSearchInput');
+  let movieUserInput = movieSearchInput.value;
+  //
+  let omdbBaseUrl = 'http://www.omdbapi.com/?';
+  let omdbKey = 'apikey=47b8f6a8';
+  let movieTitleParam = 't=' + movieUserInput.replace(/ /g, '_') + '&';
+  let movieSearchParam = 's=' + movieUserInput + '&';
+  let omdbUrl = omdbBaseUrl + movieTitleParam + movieSearchParam + omdbKey;
+  console.log(omdbUrl);
+  main.innerHTML = '';
+  popUpSection.innerHTML = '';
+  //
+  fetch(omdbUrl)
+    .then((res)=>{
+      return res.json();
+    })
+    .then((response)=>{
+      console.log(response);
+      for(let n = 0; n<4; n++) {
+        let movieIndex = response.Search[n]
+        let movieTitle = movieIndex.Title;
+        let moviePosterUrl = movieIndex.Poster;
+        let movieYear = movieIndex.Year;
+        let movieType = movieIndex.Type;
+        let movieId = movieIndex.imdbID;
+        //call create article function
+        createArticle(moviePosterUrl, movieTitle, movieYear, n);
+
+        //call create popup function
+      }
+    //close final .then()
+    })
+//close movieButton click event listener
+})
+
+main.addEventListener('click', (event)=>{
+  let target = event.target;
+  let articleClicked = target.closest('article');
+  let title = articleClicked.getElementsByClassName('title');
+  let titleInner = title[0].innerHTML;
+  let titleReplaced = titleInner.replace(/ /g, '_')
+  console.log(titleReplaced);
+  let omdbBaseUrl = 'http://www.omdbapi.com/?';
+  let omdbKey = 'apikey=47b8f6a8';
+
+  fetch(omdbBaseUrl + 't=' + titleReplaced + '&' + omdbKey)
+    .then((res)=>{
+      return res.json();
+    })
+    .then((response)=>{
+      console.log(response);
+
+      let popUpTitle = response.Title;
+      let posterUrl = response.Poster;
+      let plot = response.Plot;
+      let genre = response.Genre;
+      //popUpPicUrl, popUpHeadline, popUpDescr, popUpUrl, popUpArtIndex
+      createPopUp(posterUrl, popUpTitle, plot, genre, 0);
+      let popUpClicked = document.getElementsByClassName('popUp');
+      popUpClicked.classList.remove('hidden');
+
+      })
+    })
+
+
+
 /*
  *
  *
@@ -304,7 +382,7 @@ dateButton.addEventListener('click', (e)=>{
   year = yearInput.value;
   month = monthInput.value;
   getNytFunc();
-  console.log(month);
+  // console.log(month);
 })
 
 function getNytFunc(){
@@ -327,7 +405,7 @@ function getNytFunc(){
         alert('There ar no articles to show for that selection!');
       }
       //
-      console.log(response);
+      // console.log(response);
       //
       //iterate through response to populate #main
       for(m = 0; m<4; m++){
@@ -353,6 +431,7 @@ function getNytFunc(){
     })
 // close getNytFunc function
 }
+
 
 /*
 *
@@ -405,7 +484,6 @@ function createPopUp(popUpPicUrl, popUpHeadline, popUpDescr, popUpUrl, popUpArtI
     //insert the popUp before the spacer element
     // body.insertBefore(popUp, spacer);
     popUpSection.append(popUp);
-    // console.log(popUp.getAttribute('class'));
   //close createPopUp
   }
 
