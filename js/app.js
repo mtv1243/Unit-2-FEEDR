@@ -70,8 +70,8 @@ let getBbcEl = document.querySelector('.getBbc');
 let getBbcElInner = getBbcEl.innerHTML;
 let getNytEl = document.querySelector('.getNyt');
 let getNytElInner = getNytEl.innerHTML;
-let getOmdbEl = document.querySelector('.getOmdb');
-let getOmdbElInner = getOmdbEl.innerHTML;
+// let getOmdbEl = document.querySelector('.getOmdb');
+// let getOmdbElInner = getOmdbEl.innerHTML;
 let currentSource = document.querySelector('.currentSource');
 
 //fetch BBC data when click BBC dropdwn element
@@ -80,7 +80,7 @@ getBbcEl.addEventListener('click', (e)=>{
   dateSelector.classList.add('hidden');
   currentSource.innerHTML = getBbcElInner;
   getNytEl.classList.remove('active');
-  getOmdbEl.classList.remove('active');
+  // getOmdbEl.classList.remove('active');
   getBbcEl.classList.add('active');
   getBbcFunc();
 });
@@ -91,20 +91,20 @@ getNytEl.addEventListener('click', (e)=>{
   dateSelector.classList.remove('hidden');
   currentSource.innerHTML = getNytElInner;
   getBbcEl.classList.remove('active');
-  getOmdbEl.classList.remove('active');
+  // getOmdbEl.classList.remove('active');
   getNytEl.classList.add('active');
   getNytFunc();
 });
 
 //fetch OMDB data when click OMDB dropdown element
-getOmdbEl.addEventListener('click', (e)=>{
-  e.preventDefault();
-  dateSelector.classList.add('hidden');
-  getBbcEl.classList.remove('active');
-  getNytEl.classList.remove('active');
-  getOmdbEl.classList.add('active');
-  console.log('clicked OMDB');
-})
+// getOmdbEl.addEventListener('click', (e)=>{
+//   e.preventDefault();
+//   dateSelector.classList.add('hidden');
+//   getBbcEl.classList.remove('active');
+//   getNytEl.classList.remove('active');
+//   getOmdbEl.classList.add('active');
+//   console.log('clicked OMDB');
+// })
 /*
  *
  *
@@ -300,7 +300,7 @@ dateButton.addEventListener('click', (e)=>{
   e.preventDefault();
   popUpSection.innerHTML = '';
   main.innerHTML = '';
-  main.classList.add('loader');
+  // main.classList.add('loader');
   year = yearInput.value;
   month = monthInput.value;
   getNytFunc();

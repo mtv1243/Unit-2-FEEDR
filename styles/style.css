@@ -318,7 +318,8 @@ Main Section
 #main.loader {
   background-image: url(https://res.cloudinary.com/mtv1243/image/upload/v1576610111/ajax_loader.gif);
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center top;
+  height: 60px;
 }
 
 /* Individual Article Styling
