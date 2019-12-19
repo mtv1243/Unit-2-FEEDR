@@ -6,7 +6,7 @@
 
 #popUp {
   opacity: 0.95;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -98,6 +98,11 @@ Top Headlines Styles
   transition: all .2s;
 }
 
+.top-headlines-spacer {
+  height: 23px;
+  background: #fff;
+}
+
 .top-headlines-title:hover {
   font-weight: 600;
   background-color: #CC0020;
@@ -125,7 +130,7 @@ article {
   background-color: #fff;
   transition: background-color, .2s;
   padding: 5px;
-  height: 8em;
+  height: 9.5em;
   color: #6B0F13;
   cursor: pointer;
 }

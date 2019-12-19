@@ -1,7 +1,4 @@
 /*
-  Please add all Javascript code to this file.
-*/
-/*
 *
 *
 *   POPUP CODE
@@ -52,10 +49,7 @@ body.addEventListener('click', (event)=>{
   }
 });
 
-
-
 let dateSelector = document.querySelector('.date-selector');
-
 
 /*
 *
@@ -70,8 +64,6 @@ let getBbcEl = document.querySelector('.getBbc');
 let getBbcElInner = getBbcEl.innerHTML;
 let getNytEl = document.querySelector('.getNyt');
 let getNytElInner = getNytEl.innerHTML;
-// let getOmdbEl = document.querySelector('.getOmdb');
-// let getOmdbElInner = getOmdbEl.innerHTML;
 let currentSource = document.querySelector('.currentSource');
 
 //fetch BBC data when click BBC dropdwn element
@@ -80,7 +72,6 @@ getBbcEl.addEventListener('click', (e)=>{
   dateSelector.classList.add('hidden');
   currentSource.innerHTML = getBbcElInner;
   getNytEl.classList.remove('active');
-  // getOmdbEl.classList.remove('active');
   getBbcEl.classList.add('active');
   getBbcFunc();
 });
@@ -91,20 +82,10 @@ getNytEl.addEventListener('click', (e)=>{
   dateSelector.classList.remove('hidden');
   currentSource.innerHTML = getNytElInner;
   getBbcEl.classList.remove('active');
-  // getOmdbEl.classList.remove('active');
   getNytEl.classList.add('active');
   getNytFunc();
 });
 
-//fetch OMDB data when click OMDB dropdown element
-// getOmdbEl.addEventListener('click', (e)=>{
-//   e.preventDefault();
-//   dateSelector.classList.add('hidden');
-//   getBbcEl.classList.remove('active');
-//   getNytEl.classList.remove('active');
-//   getOmdbEl.classList.add('active');
-//   console.log('clicked OMDB');
-// })
 /*
  *
  *
@@ -122,10 +103,10 @@ $topHeadlineTitle.click(()=>{
   $topHeadlineWrapper.slideToggle();
 });
 $header.mouseenter(()=>{
-  $topHeadlineTitle.slideDown();
+  $topHeadlineTitle.slideDown(200);
 });
 $header.mouseleave(()=>{
-  $topHeadlineTitle.slideUp();
+  $topHeadlineTitle.slideUp(200);
 })
 
 //top headline variables
@@ -244,7 +225,6 @@ fetch('https://newsapi.org/v2/everything?domains=' + domain + '&apiKey=' + key)
     return res.json();
   })
   .then((response)=>{
-  // console.log(response);
   if(response.articles.length === 0) {
     alert('There ar no articles to showright now! Please refresh the page and try again.');
   }
@@ -300,7 +280,6 @@ dateButton.addEventListener('click', (e)=>{
   e.preventDefault();
   popUpSection.innerHTML = '';
   main.innerHTML = '';
-  // main.classList.add('loader');
   year = yearInput.value;
   month = monthInput.value;
   getNytFunc();
@@ -316,7 +295,7 @@ function getNytFunc(){
   main.classList.add('loader');
   main.innerHTML = '';
   popUpSection.innerHTML = '';
-  //On this day fetch
+  //On this day NYT fetch
   fetch(nytUrl)
     .then((res)=>{
       return res.json();
@@ -403,9 +382,7 @@ function createPopUp(popUpPicUrl, popUpHeadline, popUpDescr, popUpUrl, popUpArtI
     popUp.append(closePopUp);
     popUp.append(popUpContainer);
     //insert the popUp before the spacer element
-    // body.insertBefore(popUp, spacer);
     popUpSection.append(popUp);
-    // console.log(popUp.getAttribute('class'));
   //close createPopUp
   }
 
@@ -422,8 +399,6 @@ function createArticle(artPicUrl, artTitle, artSource, artIndex){
       let h6SourceEl = document.createElement('h6');
       let sectionImpressionsEl = document.createElement('section');
       let clearfixEl = document.createElement('div');
-      // anchorEl.setAttribute('target', '_blank');
-      // anchorEl.setAttribute('class', 'top-headline-anchor')
 
       //add the necessary classes and attributes
       articleEl.classList.add('article', 'article' + artIndex);
